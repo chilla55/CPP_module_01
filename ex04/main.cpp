@@ -6,7 +6,7 @@
 /*   By: agrotzsc <agrotzsc@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:07:28 by agrotzsc          #+#    #+#             */
-/*   Updated: 2022/08/22 09:44:36 by agrotzsc         ###   ########.fr       */
+/*   Updated: 2022/08/23 11:57:21 by agrotzsc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	replace(char *filename, char *old, char *newStr)
 	std::ofstream	output;
 	std::string		str;
 	std::string		tmp;
-	char			cstr[256];
+	char			cstr[2];
 	size_t			pos = 0;
 	char			*outfile;
 
@@ -32,17 +32,13 @@ void	replace(char *filename, char *old, char *newStr)
 	}
 	while (!input.eof())
 	{
-		input.getline(cstr, 255);
+		input.read(cstr, 1);
+		if (input.eof())
+			break;
 		tmp = (std::string) cstr;
 		str = str.append(tmp);
-		str = str.append("\n");
-		/*if (input.fail())
-		{
-			std::cout << "Error: Line too long" << std::endl;
-			input.close();
-			return;
-		}*/
 	}
+	tmp = newStr;
 	while (pos < str.length())
 	{
 		pos = str.find(old, pos);
@@ -50,6 +46,7 @@ void	replace(char *filename, char *old, char *newStr)
 		{
 			str.erase(pos, strlen(old));
 			str.insert(pos, newStr);
+			pos += tmp.length();
 		}
 	}
 	outfile = strcat(filename, ".replace");
