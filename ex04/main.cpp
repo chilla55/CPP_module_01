@@ -6,7 +6,7 @@
 /*   By: agrotzsc <agrotzsc@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:07:28 by agrotzsc          #+#    #+#             */
-/*   Updated: 2022/08/23 11:57:21 by agrotzsc         ###   ########.fr       */
+/*   Updated: 2022/08/23 12:18:07 by agrotzsc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	replace(char *filename, char *old, char *newStr)
 	std::ofstream	output;
 	std::string		str;
 	std::string		tmp;
+	int				a;
+	int				b;
 	char			cstr[2];
 	size_t			pos = 0;
-	char			*outfile;
 
 	input.open(filename);
 	if (input.fail())
@@ -35,22 +36,25 @@ void	replace(char *filename, char *old, char *newStr)
 		input.read(cstr, 1);
 		if (input.eof())
 			break;
-		tmp = (std::string) cstr;
-		str = str.append(tmp);
+		str = str.append(cstr);
 	}
 	tmp = newStr;
+	a = tmp.length();
+	tmp = old;
+	b = tmp.length();
+	tmp = filename;
 	while (pos < str.length())
 	{
 		pos = str.find(old, pos);
 		if (pos <= str.length())
 		{
-			str.erase(pos, strlen(old));
+			str.erase(pos, b);
 			str.insert(pos, newStr);
-			pos += tmp.length();
+			pos += a;
 		}
 	}
-	outfile = strcat(filename, ".replace");
-	output.open(outfile);
+	tmp = tmp.append(".replace");
+	output.open(&tmp[0]);
 	output << str;
 	input.close();
 	output.close();
